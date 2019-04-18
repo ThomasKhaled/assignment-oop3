@@ -1,3 +1,5 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class MainFrame extends javax.swing.JFrame {
 
@@ -118,16 +120,64 @@ public class MainFrame extends javax.swing.JFrame {
                 new MainFrame().setVisible(true);
             }
         });
+
+        jButton1.addActionListener(new ActionListener(){
+        
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(addedEmployees == 0)
+                {
+                    companyName = jTextField1.getText();
+                    employeesCount = Integer.parseInt(jTextField2.getText());
+                    company = new Company(companyName);
+                }
+                if(addedEmployees > employeesCount)
+                {
+                    /*TO DO: 
+                        1-create add employee form and fetch data from it
+                        2-update the table
+                        3-increment addedEmployees
+
+                    */
+
+                }
+                
+            }
+        });
+
+
+
+
+
+        
     }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    private static Company company;
+    private static String companyName;
+    private static int employeesCount;
+    private static int addedEmployees = 0;
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private static javax.swing.JButton jButton1;
+    private static javax.swing.JLabel jLabel1;
+    private static javax.swing.JLabel jLabel2;
+    private static javax.swing.JScrollPane jScrollPane1;
+    private static javax.swing.JTable jTable1;
+    private static javax.swing.JTextField jTextField1;
+    private static javax.swing.JTextField jTextField2;
     // End of variables declaration//GEN-END:variables
 }
 
