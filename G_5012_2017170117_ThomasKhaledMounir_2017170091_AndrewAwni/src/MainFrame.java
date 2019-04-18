@@ -68,20 +68,20 @@ public class MainFrame extends javax.swing.JFrame {
 
 class Company{
     private String m_name;
-    private Employee m_Employees;
+    private Employee[] m_Employees;
     
     public Company(String name){
         m_name = name;
     }
-    
     public void insertEmployees(Employee [] employees){
-       employees[m_Employees.getEmployeeInfo().m_id] = m_Employees.getEmployeeInfo();
+       //employees[m_Employees.getEmployeeInfo().m_id] = m_Employees.getEmployeeInfo();
+       m_Employees = employees;
     }
     
 
 }
 
-abstract class  Employee{
+abstract class Employee{
     
     protected final int m_id;
     protected String m_name;
@@ -99,10 +99,10 @@ abstract class  Employee{
   
 }
 
-class PartTime extends Employee{
+class PartTimeEmployee extends Employee{
     private int m_workHours;
 
-    public PartTime(int workHours,int id, String name, String department, int salary) {
+    public PartTimeEmployee(int workHours,int id, String name, String department, int salary) {
         super(id, name, department, salary);
         this.m_workHours = workHours;
     }
@@ -115,10 +115,10 @@ class PartTime extends Employee{
     
 }
 
-class FullTime extends Employee{
+class FullTimeEmployee extends Employee{
     private int m_insuranceNumber;
 
-    public FullTime(int insuranceNumber,int id, String name, String department, int salary) {
+    public FullTimeEmployee(int insuranceNumber,int id, String name, String department, int salary) {
         super(id, name, department, salary);
         this.m_insuranceNumber = insuranceNumber;
     }
