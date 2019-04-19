@@ -3,7 +3,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeListener;
 import javax.swing.Action;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+
+import sun.applet.Main;
+
 
 public class MainFrame extends javax.swing.JFrame {
 
@@ -49,12 +53,29 @@ public class MainFrame extends javax.swing.JFrame {
         jTextField2.setText("jTextField2");
 
         jButton1.setText("Add Employee");
+        
+
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
+        jButton2.addActionListener(new ActionListener(){
+        
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
+        jComboBox1.addActionListener(new ActionListener(){
+        
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                jComboBox1ActionPerformed(evt);
+            }
+        });
+        
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
@@ -69,7 +90,7 @@ public class MainFrame extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Full Time", "Part Time"}));
-
+        jComboBox1.setSelectedIndex(-1);
         jLabel3.setText("ID");
 
         jLabel4.setText("Name");
@@ -199,15 +220,66 @@ public class MainFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        jPanel1.setVisible(true);
+    protected void jButton2ActionPerformed(ActionEvent evt) {
         int id = Integer.parseInt(String.valueOf(idText.getText()));
         int salary = Integer.parseInt(String.valueOf(salaryText.getText()));
         String name = nameText.getText();
-;        String dep = department.getText();
+        String dep = department.getText();
         int fullPartDependant = Integer.parseInt(String.valueOf(fullPartText.getText()));
+        String kindOfEmployee = (String) jComboBox1.getSelectedItem();
+
+          
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+
+        if (addedEmployees == 0) {
+            companyName = jTextField1.getText();
+            employeesCount = Integer.parseInt(jTextField2.getText());
+            company = new Company(companyName);
+            employees = new Employee[employeesCount];
+        }
         
+        // if (addedEmployees > employeesCount) {
+        //     TO DO: 
+        //      1-create add employee form and fetch data from it
+        //      2-update the table
+        //      3-increment addedEmployees
+
+        Employee emp = null;
+        if(kindOfEmployee.equals("Full Time"))
+        {
+            int insuranceNumber = Integer.parseInt(fullPartText.getText());
+            emp = new FullTimeEmployee(insuranceNumber, id, name, dep, salary);
+        }
+        else if(kindOfEmployee.equals("Part Time"))
+        {
+            int workHours = Integer.parseInt(fullPartText.getText());
+            emp = new PartTimeEmployee(workHours, id, name, dep, salary);
+        }
+        employees[addedEmployees++] = emp;
+        company.insertEmployees(employees);
+        updateTable(employees);
+        idText.setText("");
+        salaryText.setText("");
+        nameText.setText("");
+        department.setText("");
+        fullPartText.setText("");
+        jComboBox1.setSelectedIndex(-1);
+        jPanel1.setVisible(false);
+    }
+
+    private void jComboBox1ActionPerformed(ActionEvent evt)
+    {
+        if(jComboBox1.getSelectedIndex() == -1)
+        {
+            jLabel7.setVisible(false);    
+            fullPartText.setVisible(false);
+            return;
+        }
+        else
+        {
+            jLabel7.setVisible(true);    
+            fullPartText.setVisible(true);
+        }
         String kindOfEmployee = (String) jComboBox1.getSelectedItem();
         if (kindOfEmployee.equals("Full Time")) {
                         jLabel7.setText("Insurance_no");
@@ -215,66 +287,15 @@ public class MainFrame extends javax.swing.JFrame {
         else if (kindOfEmployee.equals("Part Time")) {
                         jLabel7.setText("Work Hours");
         }
-        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-
-        if (addedEmployees == 0) {
-            companyName = jTextField1.getText();
-            employeesCount = Integer.parseInt(jTextField2.getText());
-            company = new Company(companyName);
+    }
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        if(addedEmployees == employeesCount)
+        {
+            JOptionPane.showMessageDialog(this, "You already added " + addedEmployees + " employees", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
-        if (addedEmployees > employeesCount) {
-            /*TO DO: 
-             1-create add employee form and fetch data from it
-             2-update the table
-             3-increment addedEmployees
-             */
-            jButton2.setAction(new Action() {
-
-                @Override
-                public Object getValue(String key) {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-
-                @Override
-                public void putValue(String key, Object value) {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-
-                @Override
-                public void setEnabled(boolean b) {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-
-                @Override
-                public boolean isEnabled() {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-
-                @Override
-                public void addPropertyChangeListener(PropertyChangeListener listener) {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-
-                @Override
-                public void removePropertyChangeListener(PropertyChangeListener listener) {
-                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-                }
-
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    
-                 
-
-                        Employee fullTime = new FullTimeEmployee(fullPartDependant, id, name, dep, salary);
-                        model.addRow(new Object[]{fullTime.getEmployeeInfo()});
-                      if (kindOfEmployee.equals("Part Time")) {
-                        Employee partTime = new FullTimeEmployee(fullPartDependant, id, name, dep, salary);
-
-                    }
-                }
-            });
-
-        }
+        jPanel1.setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     public static void main(String args[]) {
@@ -310,10 +331,27 @@ public class MainFrame extends javax.swing.JFrame {
 
     }
 
+    public void updateTable(Employee[] employees) {
+    
+        DefaultTableModel model =(DefaultTableModel)jTable1.getModel();
+        model.setRowCount(0);
+        for(int i = 0; i<addedEmployees; i++)
+        {
+            Employee emp = employees[i].getEmployeeInfo();
+            String type;
+            if(emp instanceof FullTimeEmployee)
+                type = "Full Time";
+            else
+                type = "Part Time";
+            model.addRow(new Object[]{emp.m_id, emp.m_name, emp.m_department,emp.m_salary,type});
+        }
+    }
+
     private static Company company;
     private static String companyName;
-    private static int employeesCount;
+    private static int employeesCount = -1;
     private static int addedEmployees = 0;
+    private static Employee[] employees;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField department;
     private javax.swing.JTextField fullPartText;
@@ -348,8 +386,8 @@ class Company {
     }
 
     public void insertEmployees(Employee[] employees) {
-        //employees[m_Employees.getEmployeeInfo().m_id] = m_Employees.getEmployeeInfo();
         m_Employees = employees;
+        
     }
 
 }
